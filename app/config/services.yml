@@ -4,6 +4,15 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  #    service_name:
+  #        class: AppBundle\Directory\ClassName
+  #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  doctrine.orm.naming_strategy.underscore_number_aware:
+    class: Doctrine\ORM\Mapping\UnderscoreNamingStrategy
+    arguments: [ "CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES", "true" ]
+
+  doctrine.orm.naming_strategy.underscore_number_aware.casing_strategy:
+    class: Doctrine\ORM\Mapping\UnderscoreNamingStrategy
+    factory: [ 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy', 'create' ]
+    arguments: [ 'lowercase' ]
+    public: false

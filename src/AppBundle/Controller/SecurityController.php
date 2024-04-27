@@ -11,7 +11,7 @@ class SecurityController extends Controller
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request)
+    public function loginAction(Request $request): ?\Symfony\Component\HttpFoundation\Response
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -27,7 +27,7 @@ class SecurityController extends Controller
     /**
      * @Route("/login_check", name="login_check")
      */
-    public function loginCheck()
+    public function loginCheck(): void
     {
         // This code is never executed.
     }
@@ -35,7 +35,7 @@ class SecurityController extends Controller
     /**
      * @Route("/logout", name="logout")
      */
-    public function logoutCheck()
+    public function logoutCheck(): void
     {
         // This code is never executed.
     }

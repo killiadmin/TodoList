@@ -1,1 +1,6 @@
 .idea
+var/cache/
+/var/
+/vendor
+var/logs/dev.log
+var/sessions/
