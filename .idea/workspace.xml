@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e54c3326-57c2-4248-b945-df196d49fbca" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20240503145345.php" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/Version20240503145345.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -271,6 +274,8 @@
       <workItem from="1714746647561" duration="345000" />
       <workItem from="1714746999348" duration="1161000" />
       <workItem from="1714764669531" duration="4911000" />
+      <workItem from="1714852636333" duration="5037000" />
+      <workItem from="1714936590190" duration="6957000" />
     </task>
     <servers />
   </component>
