@@ -35,23 +35,26 @@
     <div class="col-md-12">
         {# {% if  is_granted('ROLE_ADMIN') %} #}
         <div class="col-md-8 mt-3">
-            {# <a href="#" class="btn btn-info">Liste des utilisateurs</a> #}
-            {# <a href="#" class="btn btn-primary">Créer un utilisateur</a> #}
             {% if not app.user %}
                 {% if app.request.get('_route') == 'app_login' %}
                     <a href="{{ path('app_register') }}" class="btn btn-primary">Sign up</a>
                 {% elseif app.request.get('_route') == 'app_register' %}
-                    <a href="{{ path('app_login') }}" class="btn btn-primary">Return</a>
+                    <a href="{{ path('app_login') }}" class="btn btn-secondary">Return</a>
                 {% endif %}
             {% endif %}
         </div>
         {# {% endif %} #}
-
-        <div class="d-flex flex-row-reverse mt-3 mb-1">
+        <div class="d-flex justify-content-between mt-3 mb-1">
             {% if app.user %}
-                <a href="{{ path('app_logout') }}" class="col-md-3 btn btn-danger" style="width:145px">
-                    Log out
-                </a>
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-info text-white">Liste des utilisateurs</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-primary">Créer un utilisateur</a>
+                </div>
+                <div>
+                    <a href="{{ path('app_logout') }}" class="col-md-3 btn btn-danger" style="width:145px">
+                        Log out
+                    </a>
+                </div>
             {% endif %}
         </div>
     </div>
@@ -89,8 +92,8 @@
 <!-- /.container -->
 
 <div class="container">
-    <hr>
     <footer>
+        <hr>
         <div class="row">
             <div class="col-lg-12">
                 <p>Copyright &copy; OpenClassrooms</p>

@@ -2,11 +2,7 @@
     width: 100%;
 }
 
-.carousel-holder {
-    margin-bottom: 30px;
-}
-
-.carousel-control,
+/*.carousel-control,
 .item {
     border-radius: 4px;
 }
@@ -24,12 +20,6 @@
     width: 100%;
 }
 
-.ratings {
-    padding-right: 10px;
-    padding-left: 10px;
-    color: #d17581;
-}
-
 .thumbnail {
     padding: 0;
 }
@@ -37,13 +27,17 @@
 .thumbnail .caption-full {
     padding: 9px;
     color: #333;
-}
+}*/
 
 footer {
-    margin: 50px 0;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     text-align: center;
 }
 
+/*
 .task {
     border: .5px solid rgb(186, 184, 184);
     padding: 10px;
@@ -51,4 +45,4 @@ footer {
 
 .task a {
     text-decoration: none;
-}
+}*/
