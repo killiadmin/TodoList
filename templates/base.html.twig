@@ -9,10 +9,12 @@
 
     <title>To Do List app</title>
     <!--BootstrapV5-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <!--Google FontAwesome-->
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed&family=Comfortaa&family=Imperial+Script&family=Roboto:ital,wght@0,300;0,400;0,700;1,900&family=Work+Sans:ital,wght@0,100;0,200;0,600;0,800;1,300;1,400;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed&family=Comfortaa&family=Imperial+Script&family=Roboto:ital,wght@0,300;0,400;0,700;1,900&family=Work+Sans:ital,wght@0,100;0,200;0,600;0,800;1,300;1,400;1,800;1,900&display=swap"
+          rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -22,7 +24,8 @@
 <nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" {% if app.user %}href="{{ path('homepage') }}"{% else %}href="{{ path('app_login') }}"{% endif %}>
+            <a class="navbar-brand" {% if app.user %}href="{{ path('homepage') }}"
+               {% else %}href="{{ path('app_login') }}"{% endif %}>
                 To Do List app
             </a>
             <img src="{{ asset('img/Logo_OpenClassrooms.png') }}" alt="OpenClassrooms"/>
@@ -33,7 +36,6 @@
 <!-- Page Content -->
 <div class="container">
     <div class="col-md-12">
-        {# {% if  is_granted('ROLE_ADMIN') %} #}
         <div class="col-md-8 mt-3">
             {% if not app.user %}
                 {% if app.request.get('_route') == 'app_login' %}
@@ -43,13 +45,22 @@
                 {% endif %}
             {% endif %}
         </div>
-        {# {% endif %} #}
         <div class="d-flex justify-content-between mt-3 mb-1">
             {% if app.user %}
-                <div class="d-flex gap-3">
-                    <a href="#" class="btn btn-info text-white">Liste des utilisateurs</a>
-                    <a href="{{ path('app_register') }}" class="btn btn-primary">Créer un utilisateur</a>
-                </div>
+                {% if  is_granted('ROLE_ADMIN') %}
+                    <div class="d-flex gap-3 {% if app.request.get('_route') == 'app_register' %} flex-row-reverse {% endif %}">
+                        {% if app.request.get('_route') == 'user_list' %}
+                            <a href="{{ path("homepage") }}" class="btn btn-secondary text-white">Return to homepage</a>
+                        {% else %}
+                            <a href="{{ path("user_list") }}" class="btn btn-info text-white">Users list</a>
+                        {% endif %}
+                        {% if app.request.get('_route') == 'app_register' %}
+                            <a href="{{ path("homepage") }}" class="btn btn-secondary text-white">Return to homepage</a>
+                        {% else %}
+                            <a href="{{ path('app_register') }}" class="btn btn-primary">Create a user</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
                 <div>
                     <a href="{{ path('app_logout') }}" class="col-md-3 btn btn-danger" style="width:145px">
                         Log out
@@ -58,10 +69,9 @@
             {% endif %}
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-12">
-            {#{% for flash_message in app.session.flashBag.get('success') %}
+            {# {% for flash_message in app.session.flashBag.get('success') %}
                 <div class="alert alert-success" role="alert">
                     <strong>Superbe !</strong> {{ flash_message }}
                 </div>
@@ -71,17 +81,16 @@
                 <div class="alert alert-danger" role="alert">
                     <strong>Oops !</strong> {{ flash_message }}
                 </div>
-            {% endfor %}#}
+            {% endfor %} #}
 
             {% block header_title %}{% endblock %}
             {% block header_img %}
-                <img class="slide-image {% if app.request.get('_route') == 'app_register' %}d-none {% endif %}"
-                     src="{{ asset('img/todolist_homepage.jpg') }}" alt="todo list">
+                <img class="slide-image" src="{{ asset('img/todolist_homepage.jpg') }}" alt="todo list">
             {% endblock %}
         </div>
     </div>
 
-    <br />
+    <br/>
 
     <div class="row">
         <div class="col-md-12">
@@ -102,6 +111,8 @@
     </footer>
 </div>
 <script src="https://kit.fontawesome.com/613a25ab47.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
