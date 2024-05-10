@@ -2,12 +2,12 @@
 
 {% block header_img %}{% endblock %}
 
-{% block title %}Liste des utilisateurs{% endblock %}
+{% block title %}Users list{% endblock %}
 
 {% block body %}
     {% if users|length == 0 %}
         <div class="alert alert-warning" role="alert">
-            Il n'y a pas encore d'utilisateur enregistré. <a href="{{ path('user_create') }}" class="btn btn-warning pull-right">Créer un utilisateur</a>
+            There are no registered users yet. <a href="{{ path('user_create') }}" class="btn btn-warning pull-right">Create a user</a>
         </div>
     {% else %}
         <div class="row">
@@ -15,8 +15,8 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Nom d'utilisateur</th>
-                    <th>Adresse d'utilisateur</th>
+                    <th>Username</th>
+                    <th>User Address email</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -27,7 +27,7 @@
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
                         <td>
-                            <a href="#" class="btn btn-success btn-sm">Edit</a>
+                            <a href="{{ path('user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Edit</a>
                         </td>
                     </tr>
                 {% endfor %}
