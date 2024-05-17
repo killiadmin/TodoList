@@ -66,4 +66,37 @@ class TaskController extends AbstractController
 
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
+
+    /**
+     * Edit an existing task
+     *
+     * @param Task $task The task entity to be edited
+     * @param Request $request The request object
+     * @param EntityManagerInterface $em The EntityManagerInterface instance
+     *
+     * @return RedirectResponse|Response The redirect response or response object
+     */
+    #[Route('/tasks/{id}/edit', name: 'task_edit')]
+    public function editAction(
+        Task $task,
+        Request $request,
+        EntityManagerInterface $em
+    ): RedirectResponse|Response
+    {
+        $form = $this->createForm(TaskFormType::class, $task);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            $this->addFlash('success', 'La tâche a bien été modifiée.');
+            return $this->redirectToRoute('task_list');
+        }
+
+        return $this->render('task/edit.html.twig', [
+            'form' => $form->createView(),
+            'task' => $task,
+        ]);
+    }
 }
