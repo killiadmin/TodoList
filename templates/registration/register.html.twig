@@ -1,25 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Créer un utilisateur{% endblock %}
 
 {% block header_img %}{% endblock %}
 
 {% block body %}
-    <h1 class="text-center mb-4">Register</h1>
+    <h1 class="text-center mb-4">Créer un utilisateur</h1>
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm, {'attr': {'class': 'w-50 mx-auto'}}) }}
         {{ form_row(registrationForm.username) }}
-        <div class="mt-2"></div>
         {{ form_row(registrationForm.firstPassword) }}
-        <div class="mt-2"></div>
         {{ form_row(registrationForm.secondPassword) }}
-        <div class="mt-2"></div>
         {{ form_row(registrationForm.email) }}
-        <div class="mt-2"></div>
+        {#<div class="mt-2"></div>#}
             {% if app.user %}
                 {{ form_row(registrationForm.roles) }}
             {% endif %}
-        <button type="submit" class="btn btn-success mt-3">Register</button>
+        <div class="d-flex flex-row-reverse">
+            <button type="submit" class="btn btn-success mt-3">Ajouter</button>
+        </div>
+
     {{ form_end(registrationForm) }}
 {% endblock %}
