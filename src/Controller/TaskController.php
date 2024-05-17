@@ -100,6 +100,26 @@ class TaskController extends AbstractController
     }
 
     /**
+     * Toggles the status of a task.
+     *
+     * @param Task $task The task to be toggled
+     * @param EntityManagerInterface $em The entity manager
+     * @return RedirectResponse Redirects to the task list page
+     */
+    #[Route('/tasks/{id}/toggle', name: 'task_toggle')]
+    public function toggleTaskAction(
+        Task                   $task,
+        EntityManagerInterface $em
+    ): RedirectResponse
+    {
+        $task->toggle(!$task->isDone());
+        $em->flush();
+
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        return $this->redirectToRoute('task_list');
+    }
+
+    /**
      * Deletes a task.
      *
      * @param Task $task The task to be deleted
@@ -108,7 +128,7 @@ class TaskController extends AbstractController
      */
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(
-        Task $task,
+        Task                   $task,
         EntityManagerInterface $em
     ): RedirectResponse
     {

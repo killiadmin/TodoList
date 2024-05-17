@@ -40,15 +40,13 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row-reverse mb-5">
-                        <form>
-                            <button class="btn btn-success btn-sm pull-right">
-                                {% if not task.isDone %}
-                                    Marquer comme faite
-                                {% else %}
-                                    Marquer non terminée
-                                {% endif %}
-                            </button>
-                        </form>
+                        <a class="btn btn-success btn-sm" href="{{ path('task_toggle', {'id' : task.id }) }}">
+                            {% if not task.isDone %}
+                                Marquer comme faite
+                            {% else %}
+                                Marquer non terminée
+                            {% endif %}
+                        </a>
                         <a class="btn btn-danger btn-sm mx-1" href="{{ path('task_delete', {'id' : task.id }) }}">
                             Supprimer
                         </a>
@@ -57,7 +55,7 @@
             </div>
         {% else %}
             <div class="alert alert-warning" role="alert">
-                Aucune tâche n'a encore été enregistrée. <a href="#" class="btn btn-warning pull-right">Créer une tâche</a>
+                Aucune tâche n'a encore été enregistrée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
             </div>
         {% endfor %}
     </div>
