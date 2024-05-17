@@ -16,7 +16,7 @@ class TaskFormType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'required' => true,
-                'label' => 'Title',
+                'label' => 'Titre',
                 'label_attr' => [
                   'class' => 'fw-bold'
                 ],
@@ -26,7 +26,7 @@ class TaskFormType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'required' => true,
-                'label' => 'Content',
+                'label' => 'Contenu',
                 'label_attr' => [
                     'class' => 'fw-bold'
                 ],

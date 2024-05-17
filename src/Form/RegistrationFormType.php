@@ -26,15 +26,16 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'required' => true,
-                'label' => 'Username',
+                'label' => 'Nom d\'utilisateur',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control mb-3'
                 ]
             ])
             ->add('email', EmailType::class, [
                 'required' => true,
+                'label' => 'Adresse email',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control mb-3'
                 ]
             ]);
 
@@ -42,36 +43,36 @@ class RegistrationFormType extends AbstractType
             $builder
                 ->add('firstPassword', PasswordType::class, [
                 'mapped' => false,
-                'label' => 'Password',
+                'label' => 'Mot de passe',
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'class' => 'form-control'
+                    'class' => 'form-control mb-3'
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe doit comporter au moins {{ limit }} caractères',
                         'max' => 4096,
                     ]),
                 ],
             ])
                 ->add('secondPassword', PasswordType::class, [
                     'mapped' => false,
-                    'label' => 'Type the password again',
+                    'label' => 'Tapez le mot de passe à nouveau',
                     'attr' => [
                         'autocomplete' => 'new-password',
-                        'class' => 'form-control'
+                        'class' => 'form-control mb-3'
                     ],
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Please enter a password',
+                            'message' => 'Veuillez entrer un mot de passe',
                         ]),
                         new Length([
                             'min' => 6,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
+                            'minMessage' => 'Votre mot de passe doit comporter au moins {{ limit }} caractères',
                             'max' => 4096,
                         ]),
                     ],
@@ -91,12 +92,12 @@ class RegistrationFormType extends AbstractType
         if ($this->security->getUser()) {
             $builder->add('roles', ChoiceType::class, [
                 'choices' => [
-                    'User' => 'ROLE_USER',
-                    'Admin' => 'ROLE_ADMIN',
+                    'Utilisateur' => 'ROLE_USER',
+                    'Administrateur' => 'ROLE_ADMIN',
                 ],
                 'expanded' => false,
                 'multiple' => true,
-                'label' => 'Role',
+                'label' => 'Status',
                 'attr' => [
                     'class' => 'form-control'
                 ],

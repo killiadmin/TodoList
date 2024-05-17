@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
@@ -39,9 +39,9 @@
         <div class="col-md-8 mt-3">
             {% if not app.user %}
                 {% if app.request.get('_route') == 'app_login' %}
-                    <a href="{{ path('app_register') }}" class="btn btn-primary">Sign up</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-primary">S'inscrire</a>
                 {% elseif app.request.get('_route') == 'app_register' %}
-                    <a href="{{ path('app_login') }}" class="btn btn-secondary">Return</a>
+                    <a href="{{ path('app_login') }}" class="btn btn-secondary">Retour</a>
                 {% endif %}
             {% endif %}
         </div>
@@ -50,20 +50,20 @@
                 {% if  is_granted('ROLE_ADMIN') %}
                     <div class="d-flex gap-3 {% if app.request.get('_route') == 'app_register' %} flex-row-reverse {% endif %}">
                         {% if app.request.get('_route') == 'user_list' %}
-                            <a href="{{ path("homepage") }}" class="btn btn-secondary text-white">Return to homepage</a>
+                            <a href="{{ path("homepage") }}" class="btn btn-secondary text-white">Retourner à l'accueil</a>
                         {% else %}
-                            <a href="{{ path("user_list") }}" class="btn btn-info text-white">Users list</a>
+                            <a href="{{ path("user_list") }}" class="btn btn-info text-white">Liste des utilisateurs</a>
                         {% endif %}
                         {% if app.request.get('_route') == 'app_register' %}
-                            <a href="{{ path("homepage") }}" class="btn btn-secondary text-white">Return to homepage</a>
+                            <a href="{{ path("homepage") }}" class="btn btn-secondary text-white">Retourner à l'accueil</a>
                         {% else %}
-                            <a href="{{ path('app_register') }}" class="btn btn-primary">Create a user</a>
+                            <a href="{{ path('app_register') }}" class="btn btn-primary">Créer un utilisateur</a>
                         {% endif %}
                     </div>
                 {% endif %}
                 <div>
                     <a href="{{ path('app_logout') }}" class="col-md-3 btn btn-danger" style="width:145px">
-                        Log out
+                        Se déconnecter
                     </a>
                 </div>
             {% endif %}
