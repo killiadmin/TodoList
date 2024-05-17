@@ -93,4 +93,9 @@ class Task
 
         return $this;
     }
+
+    public function toggle($flag): void
+    {
+        $this->is_done = $flag;
+    }
 }
