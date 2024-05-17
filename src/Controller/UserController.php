@@ -48,17 +48,11 @@ class UserController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasher
     ): RedirectResponse|Response
     {
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user, ['add_password_fields' => false]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('firstPassword')->getData()
-                )
-            );
 
             $em->persist($user);
             $em->flush();

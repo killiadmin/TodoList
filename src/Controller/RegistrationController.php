@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RegistrationController extends AbstractController
 {
+    public function __construct(protected Security $security) {}
     /**
      * Registers a new user.
      *
@@ -33,11 +34,16 @@ class RegistrationController extends AbstractController
     ): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user, ['add_password_fields' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRoles(['ROLES_USER']);
+            if($form->has('roles')){
+                $user->setRoles($form['roles']->getData());
+            } else {
+                $user->setRoles(['ROLE_USER']);
+            }
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -47,6 +53,10 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+
+            if ($this->security->getUser()) {
+                return $this->redirectToRoute('user_list');
+            }
 
             return $security->login($user, 'form_login', 'main');
         }
