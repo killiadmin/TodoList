@@ -16,7 +16,9 @@
                         <div class="d-flex justify-content-between">
                             <div class="overflow-hidden">
                                 <h4>
-                                    <a class="text-decoration-none" href="#">{{ task.title }}</a>
+                                    <a class="text-decoration-none" href="{{ path('task_edit', {'id' : task.id }) }}">
+                                        {{ task.title }}
+                                    </a>
                                 </h4>
                             </div>
                             <div class="ms-3">
