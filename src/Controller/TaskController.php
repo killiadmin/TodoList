@@ -84,7 +84,6 @@ class TaskController extends AbstractController
     ): RedirectResponse|Response
     {
         $form = $this->createForm(TaskFormType::class, $task);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -98,5 +97,25 @@ class TaskController extends AbstractController
             'form' => $form->createView(),
             'task' => $task,
         ]);
+    }
+
+    /**
+     * Deletes a task.
+     *
+     * @param Task $task The task to be deleted
+     * @param EntityManagerInterface $em The entity manager
+     * @return RedirectResponse Redirects to the task list page
+     */
+    #[Route('/tasks/{id}/delete', name: 'task_delete')]
+    public function deleteTaskAction(
+        Task $task,
+        EntityManagerInterface $em
+    ): RedirectResponse
+    {
+        $em->remove($task);
+        $em->flush();
+
+        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        return $this->redirectToRoute('task_list');
     }
 }

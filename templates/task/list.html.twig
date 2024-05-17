@@ -49,9 +49,9 @@
                                 {% endif %}
                             </button>
                         </form>
-                        <form>
-                            <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
-                        </form>
+                        <a class="btn btn-danger btn-sm mx-1" href="{{ path('task_delete', {'id' : task.id }) }}">
+                            Supprimer
+                        </a>
                     </div>
                 </div>
             </div>
