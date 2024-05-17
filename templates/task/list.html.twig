@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="d-flex flex-row-reverse mb-4">
-        <a href="#" class="btn btn-info text-white">Create a task</a>
+        <a href="{{ path('task_create') }}" class="btn btn-info text-white">Create a task</a>
     </div>
     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
         {% for task in tasks %}
@@ -23,11 +23,11 @@
                                 <h4>
                                     {% if task.isDone %}
                                         <span>
-                                            <i class="fa-solid fa-xmark"></i>
+                                            <i class="fa-solid fa-check"></i>
                                         </span>
                                     {% else %}
                                         <span>
-                                            <i class="fa-solid fa-check"></i>
+                                            <i class="fa-solid fa-xmark"></i>
                                         </span>
                                     {% endif %}
                                 </h4>

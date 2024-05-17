@@ -7,8 +7,8 @@
 {% block body %}
 
     <div class="d-flex">
-        <a href="#" class="btn btn-success me-4">Create a new task</a>
-        <a href="#" class="btn btn-info text-white me-4">View the to-do list</a>
+        <a href="{{ path ('task_create') }}" class="btn btn-success me-4">Create a new task</a>
+        <a href="{{ path ('task_list') }}" class="btn btn-info text-white me-4">View the to-do list</a>
         <a href="#" class="btn btn-secondary me-4">View the list of completed tasks</a>
     </div>
 {% endblock %}
