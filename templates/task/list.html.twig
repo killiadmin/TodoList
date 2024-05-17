@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-row-reverse mb-4">
+        <a href="#" class="btn btn-info text-white">Create a task</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        {% for task in tasks %}
+            <div style="min-width: 400px;">
+                <div class="thumbnail">
+                    <div class="caption p-2 border" style="min-height: 180px; word-wrap: break-word">
+                        <div class="d-flex justify-content-between">
+                            <div class="overflow-hidden">
+                                <h4>
+                                    <a class="text-decoration-none" href="#">{{ task.title }}</a>
+                                </h4>
+                            </div>
+                            <div class="ms-3">
+                                <h4>
+                                    {% if task.isDone %}
+                                        <span>
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </span>
+                                    {% else %}
+                                        <span>
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+                                    {% endif %}
+                                </h4>
+                            </div>
+                        </div>
+                        <div>
+                            <p>{{ task.content }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row-reverse mb-5">
+                        <form>
+                            <button class="btn btn-success btn-sm pull-right">
+                                {% if not task.isDone %}
+                                    Mark as done
+                                {% else %}
+                                    Mark not completed
+                                {% endif %}
+                            </button>
+                        </form>
+                        <form>
+                            <button class="btn btn-danger btn-sm pull-right">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                There are no tasks saved yet. <a href="#" class="btn btn-warning pull-right">Create a task</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
