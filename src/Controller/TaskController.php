@@ -18,7 +18,6 @@ class TaskController extends AbstractController
      * List all tasks
      *
      * @param TaskRepository $taskRepository The TaskRepository instance
-     *
      * @return Response The response object
      */
     #[Route('/tasks', name: 'task_list')]
@@ -34,11 +33,28 @@ class TaskController extends AbstractController
     }
 
     /**
+     * Lists all checked tasks.
+     *
+     * @param TaskRepository $taskRepository The task repository
+     * @return Response The response object
+     */
+    #[Route('/tasks/checks', name: 'task_check')]
+    public function listActionCheck(
+        TaskRepository $taskRepository
+    ): Response
+    {
+        $tasks = $taskRepository->findBy(['is_done' => true]);
+
+        return $this->render('task/list.html.twig', [
+            'tasks' => $tasks
+        ]);
+    }
+
+    /**
      * Create a new task
      *
      * @param Request $request The request object
      * @param EntityManagerInterface $em The EntityManagerInterface instance
-     *
      * @return RedirectResponse|Response The redirect response or response object
      */
     #[Route('/tasks/create', name: 'task_create')]
@@ -73,7 +89,6 @@ class TaskController extends AbstractController
      * @param Task $task The task entity to be edited
      * @param Request $request The request object
      * @param EntityManagerInterface $em The EntityManagerInterface instance
-     *
      * @return RedirectResponse|Response The redirect response or response object
      */
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
