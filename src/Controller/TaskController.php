@@ -83,6 +83,10 @@ class TaskController extends AbstractController
         EntityManagerInterface $em
     ): RedirectResponse|Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas éxecuter cette action');
+        }
+
         $form = $this->createForm(TaskFormType::class, $task);
         $form->handleRequest($request);
 
@@ -132,6 +136,12 @@ class TaskController extends AbstractController
         EntityManagerInterface $em
     ): RedirectResponse
     {
+        $user = $this->getUser();
+
+        if ($user === null || (!$this->isGranted('ROLE_ADMIN') && $user !== $task->getIdUser())) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas éxecuter cette action');
+        }
+
         $em->remove($task);
         $em->flush();
 

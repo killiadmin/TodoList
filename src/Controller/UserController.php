@@ -25,6 +25,10 @@ class UserController extends AbstractController
         UserRepository $userRepository
     ): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('user/list.html.twig', [
             'users' => $userRepository->findAll()
         ]);
@@ -45,6 +49,10 @@ class UserController extends AbstractController
         EntityManagerInterface      $em
     ): RedirectResponse|Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(RegistrationFormType::class, $user, ['add_password_fields' => false]);
 
         $form->handleRequest($request);
