@@ -4,12 +4,12 @@
 
 {% block body %}
     <form method="post" class="d-flex flex-column">
+        {% if app.user %}
+            <div class=" d-flex justify-content-center mb-4">
+                Vous êtes connecté en tant que {{ app.user.username }} <a href="{{ path('app_logout') }}"></a>
+            </div>
+        {% endif %}
         <div class="d-flex flex-row">
-            {% if app.user %}
-                <div class="mb-3">
-                    Vous êtes connecté en tant que {{ app.user.username }} <a href="{{ path('app_logout') }}"></a>
-                </div>
-            {% endif %}
             <label for="username" class="w-25 text-center align-content-center">Nom d'utilisateur</label>
             <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control w-50"
                    autocomplete="username" required autofocus>
