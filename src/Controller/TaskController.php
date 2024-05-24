@@ -25,10 +25,8 @@ class TaskController extends AbstractController
         TaskRepository $taskRepository
     ): Response
     {
-        $tasks = $taskRepository->findAll();
-
         return $this->render('task/list.html.twig', [
-            'tasks' => $tasks
+            'tasks' => $taskRepository->findAll()
         ]);
     }
 
@@ -43,10 +41,8 @@ class TaskController extends AbstractController
         TaskRepository $taskRepository
     ): Response
     {
-        $tasks = $taskRepository->findBy(['is_done' => true]);
-
         return $this->render('task/list.html.twig', [
-            'tasks' => $tasks
+            'tasks' => $taskRepository->findBy(['is_done' => true])
         ]);
     }
 
@@ -134,7 +130,10 @@ class TaskController extends AbstractController
         $task->toggle(!$task->isDone());
         $em->flush();
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $this->addFlash('success', sprintf(
+            'La tâche %s a bien été marquée comme faite.', $task->getTitle()
+        ));
+
         return $this->redirectToRoute('task_list');
     }
 
