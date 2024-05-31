@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class TaskFormType extends AbstractType
 {
@@ -22,7 +23,13 @@ class TaskFormType extends AbstractType
                 ],
                 'attr' => [
                     'class' => 'form-control mb-2'
-                ]
+                ],
+                'constraints' => [
+                    new Length([
+                        'max' => 100,
+                        'maxMessage' => 'Votre titre ne peut pas dépasser {{ limit }} caractères',
+                    ])
+                ],
             ])
             ->add('content', TextareaType::class, [
                 'required' => true,

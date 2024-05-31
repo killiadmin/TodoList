@@ -14,9 +14,10 @@
                 <div class="thumbnail">
                     <div class="caption p-2 border">
                         <div class="d-flex justify-content-between">
-                            <div class="overflow-hidden">
+                            <div class="overflow-hidden blocTitle">
                                 <h4>
-                                    <a class="text-decoration-none" href="{{ path('task_edit', {'id' : task.id }) }}">
+                                    <a class="text-decoration-none titleContent" title="{{ task.title }}"
+                                       href="{{ path('task_edit', {'id' : task.id }) }}">
                                         {{ task.title }}
                                     </a>
                                 </h4>
@@ -69,4 +70,6 @@
             </div>
         {% endfor %}
     </div>
+
+    <script src="{{ asset('js/taskList.js') }}"></script>
 {% endblock %}
