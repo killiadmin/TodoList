@@ -12,7 +12,7 @@
         {% for task in tasks %}
             <div style="min-width: 400px;">
                 <div class="thumbnail">
-                    <div class="caption p-2 border" style="min-height: 180px; word-wrap: break-word">
+                    <div class="caption p-2 border">
                         <div class="d-flex justify-content-between">
                             <div class="overflow-hidden">
                                 <h4>
@@ -35,8 +35,15 @@
                                 </h4>
                             </div>
                         </div>
+                        <div class="blocContent">
+                            <p class="taskContent">
+                                {{ task.content }}
+                            </p>
+                        </div>
                         <div>
-                            <p>{{ task.content }}</p>
+                            <p class="d-flex flex-row-reverse author">
+                                {{ task.idUser ? task.idUser.username : 'Anonyme' }}
+                            </p>
                         </div>
                     </div>
                     <div class="d-flex flex-row-reverse mb-5">
