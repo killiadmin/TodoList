@@ -44,19 +44,31 @@ class TaskController extends AbstractController
     }
 
     /**
-     * Lists all checked tasks.
+     * Lists completed tasks.
      *
      * @param TaskRepository $taskRepository The task repository
-     * @return Response The response object
+     * @param PaginatorInterface $paginator The paginator
+     * @param Request $request The request
+     * @return Response The response
      */
     #[Route('/tasks/checks', name: 'task_check')]
     public function listActionCheck(
-        TaskRepository $taskRepository
+        TaskRepository $taskRepository,
+        PaginatorInterface $paginator,
+        Request $request
     ): Response
     {
-        return $this->render('task/list.html.twig', [
-            'tasks' => $taskRepository->findBy(['is_done' => true])
-        ]);
+        $query = $taskRepository->findBy(['is_done' => true]);
+
+        $limit = 9;
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $limit
+        );
+
+        return $this->render('task/list.html.twig', ['pagination' => $pagination]);
     }
 
     /**
