@@ -29,9 +29,19 @@
     color: #333;
 }*/
 
+/***
+
+============================================== LIST TASKS ==============================================================
+
+ ***/
+
 .thumbnail .caption {
     min-height: 180px;
     word-wrap: break-word;
+}
+
+.thumbnail .caption .blocTitle {
+    height : 30px;
 }
 
 .thumbnail .caption .author {
@@ -49,22 +59,12 @@
     margin : 0;
 }
 
-/*
-.task {
-    border: .5px solid rgb(186, 184, 184);
-    padding: 10px;
-}
 
-.task a {
-    text-decoration: none;
-}*/
-
-
-/*
+/***
 
 ============================================== FOOTER ==================================================================
 
- */
+ ****/
 
 footer {
     position: fixed;

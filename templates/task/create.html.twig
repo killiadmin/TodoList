@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %} Créer votre tâche {% endblock %}
+
 {% block body %}
     <div class="row">
         {{ form_start(form, {'action' : path('task_create')}) }}
@@ -11,4 +13,6 @@
             {{ form_end(form) }}
         </div>
     </div>
+
+    <script src="{{ asset('js/taskCreate.js') }}"></script>
 {% endblock %}
