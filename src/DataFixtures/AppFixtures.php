@@ -30,6 +30,17 @@ class AppFixtures extends Fixture
 
         $faker = Faker\Factory::create();
 
+        //Creation task with anonyme author
+        for ($j = 0; $j < 5; $j++) {
+            $task = new Task();
+            $task->setIdUser(null);
+            $task->setTitle($faker->text(22));
+            $task->setContent($faker->text(500));
+            $task->setDone($faker->boolean(80));
+            $task->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime()));
+            $manager->persist($task);
+        }
+
         // Creation of 50 users with 20 tasks associated
         for ($i = 0; $i < 50; $i++) {
             $user = new User();
@@ -40,11 +51,11 @@ class AppFixtures extends Fixture
             $manager->persist($user);
 
             // Creation of 20 tasks
-            for ($j = 0; $j < 20; $j++) {
+            for ($j = 0; $j < 5; $j++) {
                 $task = new Task();
                 $task->setIdUser($user);
-                $task->setTitle($faker->text(15));
-                $task->setContent($faker->text(150));
+                $task->setTitle($faker->text(22));
+                $task->setContent($faker->text(500));
                 $task->setDone($faker->boolean(80));
                 $task->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime()));
                 $manager->persist($task);
