@@ -11,7 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController extends AbstractController
 {
@@ -53,9 +55,9 @@ class TaskController extends AbstractController
      */
     #[Route('/tasks/checks', name: 'task_check')]
     public function listActionCheck(
-        TaskRepository $taskRepository,
+        TaskRepository     $taskRepository,
         PaginatorInterface $paginator,
-        Request $request
+        Request            $request
     ): Response
     {
         $query = $taskRepository->findBy(['is_done' => true]);
@@ -69,6 +71,30 @@ class TaskController extends AbstractController
         );
 
         return $this->render('task/list.html.twig', ['pagination' => $pagination]);
+    }
+
+    /**
+     * Displays the details of a task.
+     *
+     * @param int $id The ID of the task
+     * @param TaskRepository $taskRepository The task repository
+     * @return Response The response object
+     *
+     * @Route('/tasks/{id}', name='task_detail')
+     */
+    #[Route('/tasks/{id}', name: 'task_detail')]
+    public function detailAction(
+        int               $id,
+        TaskRepository    $taskRepository
+    ): Response
+    {
+        $task = $taskRepository->find($id);
+
+        if (!$task) {
+            return $this->redirectToRoute('task_list');
+        }
+
+        return $this->render('task/detail.html.twig', ['task' => $task]);
     }
 
     /**
@@ -114,13 +140,17 @@ class TaskController extends AbstractController
      */
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
     public function editAction(
-        Task $task,
-        Request $request,
-        EntityManagerInterface $em
+        Task                   $task,
+        Request                $request,
+        EntityManagerInterface $em,
+        UserInterface          $user
     ): RedirectResponse|Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createAccessDeniedException('Vous ne pouvez pas éxecuter cette action');
+        $taskUser = $task->getIdUser();
+
+        if ($taskUser && $taskUser->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier cette tâche.');
+            return $this->redirectToRoute('task_list');
         }
 
         $form = $this->createForm(TaskFormType::class, $task);
