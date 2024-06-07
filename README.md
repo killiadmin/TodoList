@@ -1,5 +1,35 @@
 # Todo List App
 
+## Mise en place des différentes versions
+
+### Main
+
+   - La production contient la V2 - Todolist
+
+#### V1 - Todolist
+
+   - Version initial du projet 
+   - Symfony 3 
+   - Php 7.1 
+
+#### V2 - Todolist
+
+   - Version mis à jour sans modification majeur 
+   - Symfony 6.4
+   - Php 8.1
+
+#### V3 - Todolist
+
+   - Version mis à jour avec modification majeur
+   - Symfony 6.4
+   - Php 8.1
+   - Améliorations proposées :
+
+     - ###### Mention de l'auteur sur chaque tâches
+     - ###### Une pagination des tâches
+     - ###### Une route supplémentaire pour afficher une tâche en détail
+     - ###### Une structure solide et cadrées des tâches (texte trop long par exemple)
+
 ## Description des besoins mentionnés
 ### Corrections d'anomalies
  - Une tâche doit être attachée à un utilisateur
@@ -90,3 +120,19 @@ symfony console d:m:m
 ```bash
 symfony console d:f:l
 ```
+
+---
+
+#### Compte administrateur de connexions :
+
+Utilisateur :
+```bash
+killiadmin
+```
+
+Mot de passe :
+```bash
+password
+```
+
+---
