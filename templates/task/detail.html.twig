@@ -8,12 +8,12 @@
     <div class="d-flex justify-content-between me-3">
         <div class="d-flex">
             <a class="btn btn-primary text-white shadow me-2"
-               href="{{ path('task_list', {'page': app.request.query.get('page')}) }}">
+               href="{{ path('task_list', {'page': app.request.query.get('page') ?: 1}) }}">
                 Retour à la liste
             </a>
             {% if is_granted('ROLE_ADMIN') or (task.getIdUser() is not null and task.getIdUser().getId() == (app.user ? app.user.id : null)) %}
                 <a class="btn btn-success btn-sm me-2 align-content-center shadow"
-                   href="{{ path('task_toggle', {'id' : task.id }) }}">
+                   href="{{ path('task_toggle', {'id' : task.id, 'page': app.request.query.get('page') ?: 1 }) }}">
                     {% if not task.isDone %}
                         Marquer comme faite
                     {% else %}
@@ -21,7 +21,7 @@
                     {% endif %}
                 </a>
                 <a class="btn btn-danger btn-sm me-1 align-content-center shadow"
-                   href="{{ path('task_delete', {'id' : task.id }) }}">
+                   href="{{ path('task_delete', {'id' : task.id, 'page': app.request.query.get('page') ?: 1 }) }}">
                     Supprimer
                 </a>
             {% endif %}

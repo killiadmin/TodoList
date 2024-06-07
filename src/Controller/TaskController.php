@@ -32,13 +32,14 @@ class TaskController extends AbstractController
         Request            $request
     ): Response
     {
-        $query = $taskRepository->findAll();
+        $query = $taskRepository->findBy([], ['id' => 'DESC']);
 
         $limit = 9;
+        $page = max(1, $request->query->getInt('page', 1));
 
         $pagination = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1),
+            $page,
             $limit
         );
 
@@ -60,13 +61,14 @@ class TaskController extends AbstractController
         Request            $request
     ): Response
     {
-        $query = $taskRepository->findBy(['is_done' => true]);
+        $query = $taskRepository->findBy(['isDone' => true], ['id' => 'DESC']);
 
         $limit = 9;
+        $page = max(1, $request->query->getInt('page', 1));
 
         $pagination = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1),
+            $page,
             $limit
         );
 
@@ -82,10 +84,10 @@ class TaskController extends AbstractController
      *
      * @Route('/tasks/{id}', name='task_detail')
      */
-    #[Route('/tasks/{id}', name: 'task_detail')]
+    #[Route('/tasks/{id<\d+>}', name: 'task_detail')]
     public function detailAction(
-        int               $id,
-        TaskRepository    $taskRepository
+        int            $id,
+        TaskRepository $taskRepository
     ): Response
     {
         $task = $taskRepository->find($id);
@@ -106,17 +108,16 @@ class TaskController extends AbstractController
      */
     #[Route('/tasks/create', name: 'task_create')]
     public function createAction(
-        Request                $request,
+        Request $request,
         EntityManagerInterface $em
-    ): RedirectResponse|Response
-    {
+    ): RedirectResponse|Response {
         $task = new Task();
         $user = $this->getUser();
         $form = $this->createForm(TaskFormType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $task->setDone(0);
+            $task->setDone(false);
             $task->setCreatedAt(new \DateTimeImmutable());
             $task->setIdUser($user);
 
@@ -179,7 +180,8 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/toggle', name: 'task_toggle')]
     public function toggleTaskAction(
         Task                   $task,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        Request                $request
     ): RedirectResponse
     {
         $task->toggle(!$task->isDone());
@@ -189,7 +191,9 @@ class TaskController extends AbstractController
             'La tâche %s a bien été marquée comme faite.', $task->getTitle()
         ));
 
-        return $this->redirectToRoute('task_list');
+        $page = $request->query->get('page', 1);
+
+        return $this->redirectToRoute('task_list', ['page' => $page]);
     }
 
     /**
@@ -202,7 +206,8 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(
         Task                   $task,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        Request                $request
     ): RedirectResponse
     {
         $user = $this->getUser();
@@ -214,7 +219,9 @@ class TaskController extends AbstractController
         $em->remove($task);
         $em->flush();
 
+        $page = $request->query->get('page', 1);
+
         $this->addFlash('success', 'La tâche a bien été supprimée.');
-        return $this->redirectToRoute('task_list');
+        return $this->redirectToRoute('task_list', ['page' => $page]);
     }
 }
