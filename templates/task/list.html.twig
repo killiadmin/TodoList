@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tâches{% endblock %}
+
+{% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-row-reverse mb-4">
+        <a href="{{ path('task_create') }}" class="btn btn-info text-white">Créer une tâche</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        {% for task in tasks %}
+            <div style="min-width: 400px;">
+                <div class="thumbnail">
+                    <div class="caption p-2 border" style="min-height: 180px; word-wrap: break-word">
+                        <div class="d-flex justify-content-between">
+                            <div class="overflow-hidden">
+                                <h4>
+                                    <a class="text-decoration-none" href="{{ path('task_edit', {'id' : task.id }) }}">
+                                        {{ task.title }}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="ms-3">
+                                <h4>
+                                    {% if task.isDone %}
+                                        <span>
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+                                    {% else %}
+                                        <span>
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </span>
+                                    {% endif %}
+                                </h4>
+                            </div>
+                        </div>
+                        <div>
+                            <p>{{ task.content }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row-reverse mb-5">
+                        {% if is_granted('ROLE_ADMIN') or (task.getIdUser() is not null and task.getIdUser().getId() == (app.user ? app.user.id : null)) %}
+                            <a class="btn btn-success btn-sm" href="{{ path('task_toggle', {'id' : task.id }) }}">
+                                {% if not task.isDone %}
+                                    Marquer comme faite
+                                {% else %}
+                                    Marquer non terminée
+                                {% endif %}
+                            </a>
+                            <a class="btn btn-danger btn-sm mx-1" href="{{ path('task_delete', {'id' : task.id }) }}">
+                                Supprimer
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div>&nbsp;</div>
+            <div class="d-flex justify-content-center alert alert-warning mt-5" role="alert">
+                Aucune tâche n'a encore été enregistrée.
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
