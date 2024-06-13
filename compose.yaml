@@ -9,4 +9,13 @@ services:
     ports:
       - "2043:3306"
     volumes:
-      - ../database/API-BileMo:/var/lib/mysql
+      - ../database/todolist:/var/lib/mysql
+  test_database:
+    image: 'mysql:8'
+    environment:
+      MYSQL_ROOT_PASSWORD: passwordtest
+      MYSQL_DATABASE: todolisttest
+    ports:
+      - "9080:3306"
+    volumes:
+      - ../database/todolisttest:/var/lib/mysql
