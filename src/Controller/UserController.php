@@ -53,7 +53,7 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', 'The user has been modified');
+            $this->addFlash('success', "L'utilisateur a été modifié");
             return $this->redirectToRoute('user_list');
         }
 
@@ -62,5 +62,25 @@ class UserController extends AbstractController
             'user' => $user,
             'is_edit' => true
         ]);
+    }
+
+    /**
+     * Deletes a user from the database.
+     *
+     * @param User $user The user to be deleted.
+     * @param EntityManagerInterface $em The entity manager for database operations.
+     * @return Response A response object.
+     */
+    #[Route('/users/{id}/delete', name: 'user_delete')]
+    public function deleteAction(
+        User                   $user,
+        EntityManagerInterface $em
+    ): Response
+    {
+        $em->remove($user);
+        $em->flush();
+
+        $this->addFlash('success', "L'utilisateur a été supprimé");
+        return $this->redirectToRoute('user_list');
     }
 }
