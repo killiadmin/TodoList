@@ -27,6 +27,7 @@ class Task
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $id_user = null;
 
     public function getId(): ?int
