@@ -34,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Task>
      */
-    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'id_user')]
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'id_user', orphanRemoval: true)]
     private Collection $tasks;
 
     public function __construct()
