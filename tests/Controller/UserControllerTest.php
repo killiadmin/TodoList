@@ -9,8 +9,6 @@ class UserControllerTest extends WebTestCase
 {
     /**
      * Test case for the `testListNoAuth` method.
-     *
-     * @covers ::// specify the classes/methods being covered by this test case
      */
     public function testListNoAuth(): void
     {
@@ -30,8 +28,6 @@ class UserControllerTest extends WebTestCase
 
     /**
      * Test case for the `testListAction` method.
-     *
-     * @covers ::// specify the classes/methods being covered by this test case
      */
     public function testListAction(): void
     {
@@ -52,8 +48,6 @@ class UserControllerTest extends WebTestCase
 
     /**
      * Test case for the `testRegister` method.
-     *
-     * @covers ::// specify the classes/methods being covered by this test case
      */
     public function testRegister(): void
     {
