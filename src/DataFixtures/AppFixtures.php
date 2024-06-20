@@ -33,8 +33,8 @@ class AppFixtures extends Fixture
         // Creation of 50 users with 20 tasks associated
         for ($i = 0; $i < 50; $i++) {
             $user = new User();
-            $user->setUsername($faker->name);
-            $user->setEmail($faker->unique()->safeEmail);
+            $user->setUsername($faker->name());
+            $user->setEmail($faker->unique()->safeEmail());
             $user->setPassword($this->passwordHasher->hashPassword($user, "password"));
             $user->setRoles(['ROLE_USER']);
             $manager->persist($user);
