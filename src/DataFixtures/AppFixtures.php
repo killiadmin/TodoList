@@ -41,8 +41,8 @@ class AppFixtures extends Fixture
         for ($j = 0; $j < 20; $j++) {
             $task = new Task();
             $task->setIdUser($userDefault);
-            $task->setTitle($faker->text(15));
-            $task->setContent($faker->text(150));
+            $task->setTitle($faker->text(80));
+            $task->setContent($faker->text(500));
             $task->setDone($faker->boolean(80));
             $task->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime()));
             $manager->persist($task);
@@ -61,8 +61,8 @@ class AppFixtures extends Fixture
             for ($j = 0; $j < 20; $j++) {
                 $task = new Task();
                 $task->setIdUser($user);
-                $task->setTitle($faker->text(15));
-                $task->setContent($faker->text(150));
+                $task->setTitle($faker->text(80));
+                $task->setContent($faker->text(500));
                 $task->setDone($faker->boolean(80));
                 $task->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime()));
                 $manager->persist($task);

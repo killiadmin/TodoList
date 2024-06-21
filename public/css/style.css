@@ -2,33 +2,6 @@
     width: 100%;
 }
 
-/*.carousel-control,
-.item {
-    border-radius: 4px;
-}
-
-.caption {
-    height: 130px;
-    overflow: hidden;
-}
-
-.caption h4 {
-    white-space: nowrap;
-}
-
-.thumbnail img {
-    width: 100%;
-}
-
-.thumbnail {
-    padding: 0;
-}
-
-.thumbnail .caption-full {
-    padding: 9px;
-    color: #333;
-}*/
-
 /***
 
 ============================================== LIST TASKS ==============================================================
@@ -59,29 +32,29 @@
     margin : 0;
 }
 
-div.pagination {
+#pagination {
     display: flex;
     justify-content: center;
     padding: 20px 0;
 }
 
-div.pagination span {
+#pagination span {
     margin: 0 10px;
 }
 
-div.pagination span.current {
+#pagination span.current {
     padding: 2px 10px 2px 10px;
     background-color: #007bff;
     color: white;
 }
 
-div.pagination span.page a {
+#pagination span.page a {
     color: #007bff;
     text-decoration: none;
 }
 
-div.pagination span.next a,
-div.pagination span.last a {
+#pagination span.next a,
+#pagination span.last a {
     color: #007bff;
     text-decoration: none;
 }

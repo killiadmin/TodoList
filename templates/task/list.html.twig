@@ -7,7 +7,7 @@
 {% block body %}
     <div class="d-flex justify-content-between align-items-center">
         <div style="width: 130px;">&nbsp;</div>
-        <div class="navigation border shadow">
+        <div id="pagination" class="navigation border shadow">
             {{ knp_pagination_render(pagination) }}
         </div>
         <div>
@@ -22,18 +22,8 @@
                         <div class="d-flex justify-content-between">
                             <div class="overflow-hidden blocTitle">
                                 <h4 title="{{ task.title }}">
-                                    {% if is_granted('ROLE_ADMIN') or (task.getIdUser() is not null and task.getIdUser().getId() == (app.user ? app.user.id : null)) %}
-                                        <a class="text-decoration-none titleContent"
-                                           href="{{ path('task_edit', {'id' : task.id }) }}">
-                                            {{ task.title }}
-                                        </a>
-                                    {% else %}
-                                        {{ task.title }}
-                                    {% endif %}
-                            <div class="overflow-hidden">
-                                <h4>
                                     {% if is_granted('ROLE_ADMIN') %}
-                                        <a class="text-decoration-none"
+                                        <a class="text-decoration-none titleContent"
                                            href="{{ path('task_edit', {'id' : task.id }) }}">
                                             {{ task.title }}
                                         </a>
