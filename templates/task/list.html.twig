@@ -30,6 +30,16 @@
                                     {% else %}
                                         {{ task.title }}
                                     {% endif %}
+                            <div class="overflow-hidden">
+                                <h4>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a class="text-decoration-none"
+                                           href="{{ path('task_edit', {'id' : task.id }) }}">
+                                            {{ task.title }}
+                                        </a>
+                                    {% else %}
+                                        {{ task.title }}
+                                    {% endif %}
                                 </h4>
                             </div>
                             <div class="ms-3">

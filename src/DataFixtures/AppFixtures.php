@@ -28,14 +28,21 @@ class AppFixtures extends Fixture
         $userAdmin->setRoles(['ROLE_ADMIN']);
         $manager->persist($userAdmin);
 
+        //Adding a Default User Account
+        $userDefault = new User();
+        $userDefault->setUsername('killiuser');
+        $userDefault->setEmail('user@todolist.fr');
+        $userDefault->setPassword($this->passwordHasher->hashPassword($userDefault, 'password'));
+        $userDefault->setRoles(['ROLE_USER']);
+        $manager->persist($userDefault);
+
         $faker = Faker\Factory::create();
 
-        //Creation task with anonyme author
-        for ($j = 0; $j < 5; $j++) {
+        for ($j = 0; $j < 20; $j++) {
             $task = new Task();
-            $task->setIdUser(null);
-            $task->setTitle($faker->text(22));
-            $task->setContent($faker->text(500));
+            $task->setIdUser($userDefault);
+            $task->setTitle($faker->text(15));
+            $task->setContent($faker->text(150));
             $task->setDone($faker->boolean(80));
             $task->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime()));
             $manager->persist($task);
@@ -51,11 +58,11 @@ class AppFixtures extends Fixture
             $manager->persist($user);
 
             // Creation of 20 tasks
-            for ($j = 0; $j < 5; $j++) {
+            for ($j = 0; $j < 20; $j++) {
                 $task = new Task();
                 $task->setIdUser($user);
-                $task->setTitle($faker->text(22));
-                $task->setContent($faker->text(500));
+                $task->setTitle($faker->text(15));
+                $task->setContent($faker->text(150));
                 $task->setDone($faker->boolean(80));
                 $task->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime()));
                 $manager->persist($task);

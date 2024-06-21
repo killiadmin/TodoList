@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -147,11 +146,8 @@ class TaskController extends AbstractController
         UserInterface          $user
     ): RedirectResponse|Response
     {
-        $taskUser = $task->getIdUser();
-
-        if ($taskUser && $taskUser->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Vous ne pouvez pas modifier cette tâche.');
-            return $this->redirectToRoute('task_list');
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_logout');
         }
 
         $form = $this->createForm(TaskFormType::class, $task);
@@ -213,7 +209,7 @@ class TaskController extends AbstractController
         $user = $this->getUser();
 
         if ($user === null || (!$this->isGranted('ROLE_ADMIN') && $user !== $task->getIdUser())) {
-            throw $this->createAccessDeniedException('Vous ne pouvez pas éxecuter cette action');
+            return $this->redirectToRoute('app_logout');
         }
 
         $em->remove($task);
