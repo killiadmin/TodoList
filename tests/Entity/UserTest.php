@@ -59,4 +59,27 @@ class UserTest extends KernelTestCase
         $this->assertCount(1, $user->getTasks());
         $this->assertFalse($user->getTasks()->contains($task1));
     }
+
+    /**
+     * Test the eraseCredentials method of the User class.
+     */
+    public function testEraseCredentials(): void
+    {
+        $user = new User();
+        // Set password and temporary token
+        $user->setPassword('password123');
+        $user->setTemporaryToken('temporary_token');
+
+        // Check that the password and temporary token are well defined
+        $this->assertEquals('password123', $user->getPassword());
+        $this->assertEquals('temporary_token', $user->getTemporaryToken());
+
+        // Call the eraseCredentials method
+        $user->eraseCredentials();
+
+        // Verify that the temporary token has been deleted
+        $this->assertNull($user->getTemporaryToken());
+        // Check that the password has not been deleted
+        $this->assertEquals('password123', $user->getPassword());
+    }
 }

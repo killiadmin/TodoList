@@ -57,8 +57,8 @@ class AppFixturesTest extends TestCase
 
         $tasks = array_filter($persistedEntities, static fn($entity) => $entity instanceof Task);
 
-        $this->assertCount(50, $users);
-        $this->assertCount(1000, $tasks);
+        $this->assertCount(51, $users);
+        $this->assertCount(1020, $tasks);
 
         // Check that a user has 20 associated tasks
         $user = reset($users);
