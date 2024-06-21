@@ -11,7 +11,7 @@ class DefaultControllerTest extends WebTestCase
      * This test ensures that when a user is not authenticated and tries to access the homepage,
      * they are redirected to the login page with a 302 redirection status code.
      */
-    public function testIndexRedirectsToLoginWhenNotAuthenticated(): void
+    public function testIndexNotAuthenticated(): void
     {
         $client = static::createClient();
         $client->request('GET', '/');
@@ -23,7 +23,7 @@ class DefaultControllerTest extends WebTestCase
     /**
      * Test case to verify that the homepage is displayed when authenticated.
      */
-    public function testIndexDisplaysHomePageWhenAuthenticated(): void
+    public function testIndexAuthenticated(): void
     {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);

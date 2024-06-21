@@ -5,6 +5,7 @@ namespace Controller;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TaskControllerTest extends WebTestCase
 {
@@ -87,7 +88,7 @@ class TaskControllerTest extends WebTestCase
     /**
      * Test the edit action of a task.
      */
-    public function testEditAction(): void
+    public function testEditActionAsAdministrator(): void
     {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -127,6 +128,33 @@ class TaskControllerTest extends WebTestCase
     }
 
     /**
+     * Test the edit task action with access denied.
+     */
+    public function testEditTaskActionAccessDenied(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $taskRepository = static::getContainer()->get(TaskRepository::class);
+
+        $userUnauthorized = $userRepository->findOneByUsername('killiuser');
+        $task = $taskRepository->findOneByTitle('Mon titre de test modifié');
+
+        if (!$task) {
+            $this->markTestSkipped('No task with this title was found.');
+        }
+
+        if ($userUnauthorized) {
+            $client->loginUser($userUnauthorized);
+            $client->request('GET', '/tasks/' . $task->getId() . '/edit');
+
+            self::assertResponseRedirects('/logout', 302);
+
+            $client->followRedirect();
+            self::assertResponseRedirects('/login');
+        }
+    }
+
+    /**
      * Test the toggle action of a task.
      */
     public function testToggleTaskAction(): void
@@ -158,9 +186,36 @@ class TaskControllerTest extends WebTestCase
     }
 
     /**
+     * Test the delete action of a task with access denied.
+     */
+    public function testDeleteTaskActionAccessDenied(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $taskRepository = static::getContainer()->get(TaskRepository::class);
+
+        $userUnauthorized = $userRepository->findOneByUsername('killiuser');
+        $task = $taskRepository->findOneByTitle('Mon titre de test modifié');
+
+        if (!$task) {
+            $this->markTestSkipped('No task with this title was found.');
+        }
+
+        if ($userUnauthorized) {
+            $client->loginUser($userUnauthorized);
+            $client->request('GET', '/tasks/' . $task->getId() . '/delete');
+
+            self::assertResponseRedirects('/logout', 302);
+
+            $client->followRedirect();
+            self::assertResponseRedirects('/login');
+        }
+    }
+
+    /**
      * Test the delete action of a task.
      */
-    public function testDeleteTaskAction(): void
+    public function testDeleteTaskActionAsAdministrator(): void
     {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
