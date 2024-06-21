@@ -95,7 +95,7 @@ class TaskController extends AbstractController
     ): RedirectResponse|Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createAccessDeniedException('Vous ne pouvez pas éxecuter cette action');
+            return $this->redirectToRoute('app_logout');
         }
 
         $form = $this->createForm(TaskFormType::class, $task);
@@ -153,7 +153,7 @@ class TaskController extends AbstractController
         $user = $this->getUser();
 
         if ($user === null || (!$this->isGranted('ROLE_ADMIN') && $user !== $task->getIdUser())) {
-            throw $this->createAccessDeniedException('Vous ne pouvez pas éxecuter cette action');
+            return $this->redirectToRoute('app_logout');
         }
 
         $em->remove($task);

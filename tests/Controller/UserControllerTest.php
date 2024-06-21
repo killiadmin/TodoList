@@ -49,7 +49,7 @@ class UserControllerTest extends WebTestCase
     /**
      * Test case for the `testRegister` method.
      */
-    public function testRegister(): void
+    public function testRegisterAsAdministrator(): void
     {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -59,23 +59,67 @@ class UserControllerTest extends WebTestCase
             $this->markTestSkipped('No users with this username were found.');
         }
 
-        $client
-            ->loginUser($userAdmin)
-            ->request('GET', '/users/create');
+        $client->loginUser($userAdmin);
+        $client->request('GET', '/users/create');
 
+        // Test case where passwords match
         $datasToRegister = [
-                'registration_form[username]' => 'killiuser',
-                'registration_form[firstPassword]' => 'password',
-                'registration_form[secondPassword]' => 'password',
-                'registration_form[email]' => 'user@todolist.fr',
-                'registration_form[roles]' => ['ROLE_USER']
+            'registration_form[username]' => 'userRandom1',
+            'registration_form[firstPassword]' => 'password',
+            'registration_form[secondPassword]' => 'password',
+            'registration_form[email]' => 'userRandom1@todolist.fr',
+            'registration_form[roles]' => ['ROLE_USER']
         ];
 
         $client->submitForm('Ajouter', $datasToRegister);
 
-        // Checks that the response status is 302 (redirection)
-        $client->followRedirects();
+        // Check that the response status is 302 (redirection)
         self::assertResponseRedirects('/users', 302);
+
+        // Follow the redirect to ensure the user was created successfully
+        $client->followRedirect();
+
+        // Now test case where passwords do not match
+        $datasToRegister['registration_form[firstPassword]'] = 'password1';
+        $datasToRegister['registration_form[secondPassword]'] = 'password2';
+
+        $client->request('GET', '/users/create');
+        $client->submitForm('Ajouter', $datasToRegister);
+
+        // Check that the response status is 422 (Unprocessable Entity)
+        self::assertResponseStatusCodeSame(422);
+
+        // Check for the specific error message
+        $this->assertStringContainsString('Passwords must match.', $client->getResponse()->getContent());
+    }
+
+    /**
+     * Test case for the `testRegister` method.
+     */
+    public function testRegister(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $client->request('GET', '/users/create');
+
+        // Test case where passwords match
+        $datasToRegister = [
+            'registration_form[username]' => 'userRandom',
+            'registration_form[firstPassword]' => 'passwordRandom',
+            'registration_form[secondPassword]' => 'passwordRandom',
+            'registration_form[email]' => 'userRamdom@todolist.fr'
+        ];
+
+        $client->submitForm('Ajouter', $datasToRegister);
+
+        // Check that the response status is 302 (redirection)
+        self::assertResponseRedirects('/', 302);
+
+        // Follow the redirect to ensure the user was created successfully
+        $client->followRedirect();
+
+        $createdUser = $userRepository->findOneByUsername('userRandom');
+        self::assertContains('ROLE_USER', $createdUser->getRoles());
     }
 
     /**
@@ -87,7 +131,7 @@ class UserControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
 
         $userAdmin = $userRepository->findOneByUsername('killiadmin');
-        $userDefault = $userRepository->findOneByUsername('killiuser');
+        $userDefault = $userRepository->findOneByUsername('userRandom1');
 
         if (!$userAdmin || !$userDefault) {
             $this->markTestSkipped('No users with this username were found.');
@@ -113,7 +157,7 @@ class UserControllerTest extends WebTestCase
         $userDefaultUpdate = $userRepository->find($userDefault->getId());
 
         $this->assertNotNull($userRepository->findOneByEmail('killiupdate@todolist.fr'));
-        $this->assertNull($userRepository->findOneByEmail('user@todolist.fr'));
+        $this->assertNull($userRepository->findOneByEmail('userRamdom1@todolist.fr'));
         $this->assertSame('killiupdate', $userDefaultUpdate->getUsername());
     }
 
@@ -127,22 +171,29 @@ class UserControllerTest extends WebTestCase
 
         $userAdmin = $userRepository->findOneByUsername('killiadmin');
         $userDefault = $userRepository->findOneByUsername('killiupdate');
+        $userRandom = $userRepository->findOneByUsername('userRandom');
 
         if (!$userAdmin || !$userDefault) {
             $this->markTestSkipped('No users with this usernames were found.');
         }
 
-        $userId = $userDefault->getId();
+        $userDefaultId = $userDefault->getId();
+        $userRandomId = $userRandom->getId();
 
         $client
             ->loginUser($userAdmin)
-            ->request('GET', '/users/' . $userId . '/delete');
+            ->request('GET', '/users/' . $userDefaultId . '/delete');
+
+        $client
+            ->loginUser($userAdmin)
+            ->request('GET', '/users/' . $userRandomId . '/delete');
 
         // Checks that the response status is 302 (redirection)
         $client->followRedirects();
         self::assertResponseRedirects('/users', 302);
 
         // Checks that the user has been deleted
-        self::assertNull($userRepository->find($userId));
+        self::assertNull($userRepository->find($userDefaultId));
+        self::assertNull($userRepository->find($userRandom));
     }
 }

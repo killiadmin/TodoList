@@ -28,7 +28,25 @@ class AppFixtures extends Fixture
         $userAdmin->setRoles(['ROLE_ADMIN']);
         $manager->persist($userAdmin);
 
+        //Adding a Default User Account
+        $userDefault = new User();
+        $userDefault->setUsername('killiuser');
+        $userDefault->setEmail('user@todolist.fr');
+        $userDefault->setPassword($this->passwordHasher->hashPassword($userDefault, 'password'));
+        $userDefault->setRoles(['ROLE_USER']);
+        $manager->persist($userDefault);
+
         $faker = Faker\Factory::create();
+
+        for ($j = 0; $j < 20; $j++) {
+            $task = new Task();
+            $task->setIdUser($userDefault);
+            $task->setTitle($faker->text(15));
+            $task->setContent($faker->text(150));
+            $task->setDone($faker->boolean(80));
+            $task->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime()));
+            $manager->persist($task);
+        }
 
         // Creation of 50 users with 20 tasks associated
         for ($i = 0; $i < 50; $i++) {
