@@ -26,7 +26,7 @@ class TaskController extends AbstractController
     ): Response
     {
         return $this->render('task/list.html.twig', [
-            'tasks' => $taskRepository->findAll()
+            'tasks' => $taskRepository->findBy([], ['id' => 'DESC'])
         ]);
     }
 
@@ -42,7 +42,7 @@ class TaskController extends AbstractController
     ): Response
     {
         return $this->render('task/list.html.twig', [
-            'tasks' => $taskRepository->findBy(['is_done' => true])
+            'tasks' => $taskRepository->findBy(['is_done' => true], ['id' => 'DESC'])
         ]);
     }
 
