@@ -60,7 +60,7 @@ class TaskController extends AbstractController
         Request            $request
     ): Response
     {
-        $query = $taskRepository->findBy(['isDone' => true], ['id' => 'DESC']);
+        $query = $taskRepository->findBy(['is_done' => true], ['id' => 'DESC']);
 
         $limit = 9;
         $page = max(1, $request->query->getInt('page', 1));
