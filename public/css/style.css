@@ -2,32 +2,68 @@
     width: 100%;
 }
 
-/*.carousel-control,
-.item {
-    border-radius: 4px;
+/***
+
+============================================== LIST TASKS ==============================================================
+
+ ***/
+
+.thumbnail .caption {
+    min-height: 180px;
+    word-wrap: break-word;
 }
 
-.caption {
-    height: 130px;
-    overflow: hidden;
+.thumbnail .caption .blocTitle {
+    height : 30px;
 }
 
-.caption h4 {
-    white-space: nowrap;
+.thumbnail .caption .author {
+    color: grey;
+    font-style: italic;
+    margin: 0;
 }
 
-.thumbnail img {
-    width: 100%;
+.thumbnail .caption .blocContent {
+    height : 100px;
+    overflow: scroll;
 }
 
-.thumbnail {
-    padding: 0;
+.thumbnail .caption .taskContent {
+    margin : 0;
 }
 
-.thumbnail .caption-full {
-    padding: 9px;
-    color: #333;
-}*/
+#pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+#pagination span {
+    margin: 0 10px;
+}
+
+#pagination span.current {
+    padding: 2px 10px 2px 10px;
+    background-color: #007bff;
+    color: white;
+}
+
+#pagination span.page a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#pagination span.next a,
+#pagination span.last a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/***
+
+============================================== FOOTER ==================================================================
+
+ ****/
 
 footer {
     position: fixed;
@@ -35,14 +71,6 @@ footer {
     bottom: 0;
     width: 100%;
     text-align: center;
+    background-color: white;
+    padding : 15px;
 }
-
-/*
-.task {
-    border: .5px solid rgb(186, 184, 184);
-    padding: 10px;
-}
-
-.task a {
-    text-decoration: none;
-}*/

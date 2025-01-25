@@ -6,44 +6,96 @@ use App\Entity\Task;
 use App\Form\TaskFormType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TaskController extends AbstractController
 {
     /**
-     * List all tasks
+     * Lists all tasks.
      *
-     * @param TaskRepository $taskRepository The TaskRepository instance
+     * @param TaskRepository $taskRepository The task repository
+     * @param PaginatorInterface $paginator The paginator service
+     * @param Request $request The request object
      * @return Response The response object
      */
     #[Route('/tasks', name: 'task_list')]
     public function listAction(
-        TaskRepository $taskRepository
+        TaskRepository     $taskRepository,
+        PaginatorInterface $paginator,
+        Request            $request
     ): Response
     {
-        return $this->render('task/list.html.twig', [
-            'tasks' => $taskRepository->findBy([], ['id' => 'DESC'])
-        ]);
+        $query = $taskRepository->findBy([], ['id' => 'DESC']);
+
+        $limit = 9;
+        $page = max(1, $request->query->getInt('page', 1));
+
+        $pagination = $paginator->paginate(
+            $query,
+            $page,
+            $limit
+        );
+
+        return $this->render('task/list.html.twig', ['pagination' => $pagination]);
     }
 
     /**
-     * Lists all checked tasks.
+     * Lists completed tasks.
      *
      * @param TaskRepository $taskRepository The task repository
-     * @return Response The response object
+     * @param PaginatorInterface $paginator The paginator
+     * @param Request $request The request
+     * @return Response The response
      */
     #[Route('/tasks/checks', name: 'task_check')]
     public function listActionCheck(
+        TaskRepository     $taskRepository,
+        PaginatorInterface $paginator,
+        Request            $request
+    ): Response
+    {
+        $query = $taskRepository->findBy(['is_done' => true], ['id' => 'DESC']);
+
+        $limit = 9;
+        $page = max(1, $request->query->getInt('page', 1));
+
+        $pagination = $paginator->paginate(
+            $query,
+            $page,
+            $limit
+        );
+
+        return $this->render('task/list.html.twig', ['pagination' => $pagination]);
+    }
+
+    /**
+     * Displays the details of a task.
+     *
+     * @param int $id The ID of the task
+     * @param TaskRepository $taskRepository The task repository
+     * @return Response The response object
+     *
+     * @Route('/tasks/{id}', name='task_detail')
+     */
+    #[Route('/tasks/{id<\d+>}', name: 'task_detail')]
+    public function detailAction(
+        int            $id,
         TaskRepository $taskRepository
     ): Response
     {
-        return $this->render('task/list.html.twig', [
-            'tasks' => $taskRepository->findBy(['is_done' => true], ['id' => 'DESC'])
-        ]);
+        $task = $taskRepository->find($id);
+
+        if (!$task) {
+            return $this->redirectToRoute('task_list');
+        }
+
+        return $this->render('task/detail.html.twig', ['task' => $task]);
     }
 
     /**
@@ -55,17 +107,16 @@ class TaskController extends AbstractController
      */
     #[Route('/tasks/create', name: 'task_create')]
     public function createAction(
-        Request                $request,
+        Request $request,
         EntityManagerInterface $em
-    ): RedirectResponse|Response
-    {
+    ): RedirectResponse|Response {
         $task = new Task();
         $user = $this->getUser();
         $form = $this->createForm(TaskFormType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $task->setDone(0);
+            $task->setDone(false);
             $task->setCreatedAt(new \DateTimeImmutable());
             $task->setIdUser($user);
 
@@ -89,9 +140,10 @@ class TaskController extends AbstractController
      */
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
     public function editAction(
-        Task $task,
-        Request $request,
-        EntityManagerInterface $em
+        Task                   $task,
+        Request                $request,
+        EntityManagerInterface $em,
+        UserInterface          $user
     ): RedirectResponse|Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
@@ -124,7 +176,8 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/toggle', name: 'task_toggle')]
     public function toggleTaskAction(
         Task                   $task,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        Request                $request
     ): RedirectResponse
     {
         $task->toggle(!$task->isDone());
@@ -134,7 +187,9 @@ class TaskController extends AbstractController
             'La tâche %s a bien été marquée comme faite.', $task->getTitle()
         ));
 
-        return $this->redirectToRoute('task_list');
+        $page = $request->query->get('page', 1);
+
+        return $this->redirectToRoute('task_list', ['page' => $page]);
     }
 
     /**
@@ -147,7 +202,8 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(
         Task                   $task,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        Request                $request
     ): RedirectResponse
     {
         $user = $this->getUser();
@@ -159,7 +215,9 @@ class TaskController extends AbstractController
         $em->remove($task);
         $em->flush();
 
+        $page = $request->query->get('page', 1);
+
         $this->addFlash('success', 'La tâche a bien été supprimée.');
-        return $this->redirectToRoute('task_list');
+        return $this->redirectToRoute('task_list', ['page' => $page]);
     }
 }
